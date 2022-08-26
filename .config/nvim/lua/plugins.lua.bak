@@ -1,0 +1,127 @@
+vim.cmd [[packadd packer.nvim]]
+
+
+return require('packer').startup(function()
+        use { 'wbthomason/packer.nvim' }
+        use {'kyazdani42/nvim-tree.lua', config = function() require("nvim-tree").setup() end}
+        use { 'https://github.com/gauteh/vim-cppman' ,event="BufWinEnter"}
+        use { 'https://github.com/terrortylor/nvim-comment' ,event="BufWinEnter",
+    config = function()
+require("nvim_comment").setup()
+end}
+        use { 'https://github.com/mfussenegger/nvim-dap' }
+        use {'ojroques/nvim-hardline'}
+        use { 'ibhagwan/fzf-lua',
+        requires = { 'kyazdani42/nvim-web-devicons' }
+        }
+        use({
+            "kylechui/nvim-surround",
+            tag = "*", -- Use for stability; omit to use `main` branch for the latest features
+            config = function()
+            require("nvim-surround").setup({
+                    -- Configuration here, or leave empty to use defaults
+                    })
+            end
+            })   
+        use {
+            "windwp/nvim-autopairs",
+        config = function() require("nvim-autopairs").setup {} end,event="BufWinEnter",
+            }
+        use { "catppuccin/nvim", as = "catppuccin" }
+        use { "nathom/filetype.nvim" }
+        use {
+        'goolord/alpha-nvim',
+        config = function ()
+        require'alpha'.setup(require'alpha.themes.dashboard'.config)
+        end
+        } 
+use { 'CRAG666/code_runner.nvim', requires = 'nvim-lua/plenary.nvim' ,event="BufWinEnter", config = function() 
+require('code_runner').setup({
+        -- put here the commands by filetype
+        filetype = {
+        javascript = 'node $dir/$fileName',
+        java = "cd $dir && javac $fileName && java $fileNameWithoutExt",
+        python = "python3 -u",
+        typescript = "deno run",
+        rust = "cd $dir && rustc $fileName && $dir/$fileNameWithoutExt",
+        cpp = "cd $dir && clang++ -g $fileName -o $fileNameWithoutExt && $dir/$fileNameWithoutExt"
+        },
+        mode = 'term',
+        -- Focus on runner window(only works on toggle, term and tab mode)
+        focus = true,
+        -- startinsert (see ':h inserting-ex')
+        startinsert = true,
+        term = {
+        --  Position to open the terminal, this option is ignored if mode is tab
+        position = "bot",
+        -- window size, this option is ignored if tab is true
+        size = 8,
+        },
+        float = {
+            -- Window border (see ':h nvim_open_win')
+                border = "rounded",
+            -- Num from `0 - 1` for measurements
+                height = 0.8,
+            width = 0.8,
+            x = 0.5,
+            y = 0.5,
+            -- Highlight group for floating window/border (see ':h winhl')
+                border_hl = "",
+            float_hl = "Normal",
+            -- Transparency (see ':h winblend')
+                blend = 5,
+        }
+})end}
+use {
+    'nvim-treesitter/nvim-treesitter',
+        run = function() require('nvim-treesitter.install').update({ with_sync = true }) 
+
+require'nvim-treesitter.configs'.setup {
+    highlight ={
+        enable= not (os.getenv("COLORTERM")== nil or os.getenv("COLORTERM") == ''),
+        additional_vim_regex_highlighting = false,
+    },
+              rainbow = {
+                  enable = true,
+                  -- disable = { "jsx", "cpp" }, list of languages you want to disable the plugin for
+                      extended_mode = true, -- Also highlight non-bracket delimiters like html tags, boolean or table: lang -> boolean
+                      max_file_lines = nil, -- Do not enable for files with more than n lines, int
+                      -- colors = {}, -- table of hex strings
+                      --let g:rainbow_ctermfgs = ['lightblue', 'lightgreen', 'yellow', 'red', 'magenta']
+                      --         termcolors = {"lightblue", "lightgreen", "yellow", "red", "magenta"} -- table of colour name strings
+              },
+}
+end,event="BufWinEnter",
+}
+
+
+use {
+    'abecodes/tabout.nvim',
+        config = function()
+require('tabout').setup {
+    tabkey = '<Tab>', -- key to trigger tabout, set to an empty string to disable
+    backwards_tabkey = '<S-Tab>', -- key to trigger backwards tabout, set to an empty string to disable
+    act_as_tab = true, -- shift content if tab out is not possible
+    act_as_shift_tab = false, -- reverse shift content if tab out is not possible (if your keyboard/terminal supports <S-Tab>)
+    default_tab = '<C-t>', -- shift default action (only at the beginning of a line, otherwise <TAB> is used)
+    default_shift_tab = '<C-d>', -- reverse shift default action,
+    enable_backwards = true, -- well ...
+    completion = false, -- if the tabkey is used in a completion pum
+    tabouts = {
+        {open = "'", close = "'"},
+        {open = '"', close = '"'},
+        {open = '`', close = '`'},
+        {open = '(', close = ')'},
+        {open = '[', close = ']'},
+        {open = '{', close = '}'}
+        },
+    ignore_beginning = true, --[[ if the cursor is at the beginning of a filled element it will rather tab out than shift the content ]]
+    exclude = {} -- tabout will ignore these filetypes
+    }
+    end,
+        require = {'nvim-treesitter'}, -- or require if not used so far
+            --after = {'nvim-cmp'} -- if a completion plugin is using tabs load it before
+}
+        use { "https://github.com/p00f/nvim-ts-rainbow" ,after = {'nvim-treesitter'}}
+end
+)
