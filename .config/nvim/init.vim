@@ -6,14 +6,12 @@ require'nvim-treesitter.configs'.setup {
         additional_vim_regex_highlighting = false,
     },
               rainbow = {
-                  enable = true,
-                      extended_mode = true, -- Also highlight non-bracket delimiters like html tags, boolean or table: lang -> boolean
+                  enable = false,
+                      extended_mode = false, -- Also highlight non-bracket delimiters like html tags, boolean or table: lang -> boolean
                       max_file_lines = nil, -- Do not enable for files with more than n lines, int
-                      -- colors = {}, -- table of hex strings
-                      --let g:rainbow_ctermfgs = ['lightblue', 'lightgreen', 'yellow', 'red', 'magenta']
-                      --         termcolors = {"lightblue", "lightgreen", "yellow", "red", "magenta"} -- table of colour name strings
               },
 }
+-- require("nvim-dap-virtual-text").setup()
 require('tabout').setup {
     tabkey = '<Tab>', -- key to trigger tabout, set to an empty string to disable
     backwards_tabkey = '<S-Tab>', -- key to trigger backwards tabout, set to an empty string to disable
@@ -83,7 +81,7 @@ EOF
 let g:catppuccin_flavour = "mocha" " latte, frappe, macchiato, mocha
 set termguicolors
 colorscheme catppuccin
-if empty($COLORTERM)
+if empty($COLORTERM)&&!exists("g:neovide")
     colorscheme minimalist
 endif
 set background=dark " for the dark version
@@ -92,10 +90,10 @@ if exists("g:neovide")
     " Put anything you want to happen only in Neovide here
     let g:neovide_input_use_logo=v:true  " v:true on macOS
     let g:neovide_refesh_rate_idle=5
-    let g:neovide_transparency=0.0
-    let g:transparency = 0.8
+    " let g:neovide_transparency=0.0
+    " let g:transparency = 0.8
     let g:neovide_background_color = '#0f1117'.printf('%x', float2nr(255 * g:transparency))
-    "let g:neovide_remember_windows_size = v:true
+    let g:neovide_remember_windows_size = v:true
     let g:neovide_floating_blur_amount_x = 2.0
     let g:neovide_floating_blur_amount_y = 2.0
     let g:neovide_refresh_rate=120
@@ -137,7 +135,7 @@ set relativenumber
 " set noerrorbells
 set visualbell
 set title
-set clipboard=unnamedplus
+" set clipboard=unnamedplus
 
 " Code Folding Options
 set foldmethod=indent
@@ -147,7 +145,7 @@ set nofoldenable
 " Miscellaneous Options
 set autoread
 set autochdir
-set backspace=indent,eol,start
+"set backspace=indent,eol,start
 set confirm
 set hidden
 set history=1000
@@ -165,9 +163,9 @@ let g:netrw_list_hide = '\(^\|\s\s\)\zs\.\S\+,\(^\|\s\s\)ntuser\.\S\+'
 map <Space> <Leader>
 nnoremap <silent> <Leader>r <Cmd> :10split <CR>:term ./%:r <CR> i <CR>
 nnoremap <F3> :NvimTreeToggle <CR>
-nnoremap <F2> :30vs %:r.in <CR>
+nnoremap <F2> :25vs %:r.in <CR>
 nnoremap <silent> <Leader>x <Cmd>  :!./%:r < %:r.in <CR>
-nnoremap <silent> <Leader>cp <Cmd>  :w <CR> :!clang++ -g -std=c++20 -Wall % -o %:r<CR>
+nnoremap <silent> <Leader>cp <Cmd>  :w <CR> :!clang++ -std=c++20 -Wall % -o %:r<CR>
 nnoremap <leader>ff <cmd>FzfLua files<cr>
 nnoremap <C-t> <cmd>FzfLua files<cr>
 nnoremap <leader>fg <cmd>FzfLua live_grep_native<cr>
@@ -186,3 +184,6 @@ tnoremap <C-w>h <C-\><C-n><C-w>h
 tnoremap <C-w>l <C-\><C-n><C-w>l
 tnoremap <C-w>j <C-\><C-n><C-w>j
 tnoremap <C-w>k <C-\><C-n><C-w>k
+
+cnoremap <A-BS> <c-w>
+inoremap <A-BS> <c-w>

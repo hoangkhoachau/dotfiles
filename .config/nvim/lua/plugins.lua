@@ -5,11 +5,13 @@ return require('packer').startup(function()
         use { 'wbthomason/packer.nvim' }
         use {'kyazdani42/nvim-tree.lua', config = function() require("nvim-tree").setup() end}
         use { 'https://github.com/gauteh/vim-cppman' }
+        use 'neovim/nvim-lspconfig'
+        use 'hrsh7th/nvim-cmp' 
+        use 'theHamsta/nvim-dap-virtual-text'
         use { 'https://github.com/terrortylor/nvim-comment' ,
     config = function()
 require("nvim_comment").setup()
 end}
-        use { 'https://github.com/mfussenegger/nvim-dap' }
         use {'ojroques/nvim-hardline'}
         use { 'ibhagwan/fzf-lua',
         requires = { 'kyazdani42/nvim-web-devicons' }
