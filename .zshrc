@@ -10,6 +10,7 @@ export ZSH="$HOME/.oh-my-zsh"
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
 ZSH_THEME="robbyrussell"
 
+
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
 # a theme from this variable instead of looking in $ZSH/themes/
@@ -98,7 +99,6 @@ source $ZSH/oh-my-zsh.sh
 #
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
-source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 PS1="%F{green}%*%f %F{blue}%~%f %F{red}${vcs_info_msg_0_}%f$ "
@@ -107,3 +107,36 @@ if type rg &> /dev/null; then
   export FZF_DEFAULT_OPTS='-m'
 fi
 export FZF_DEFAULT_COMMAND='fd --type f --strip-cwd-prefix'
+KEYTIMEOUT=1
+zle-keymap-select () {
+if [ $KEYMAP = vicmd ]; then
+    printf "\033[2 q"
+else
+    printf "\033[6 q"
+fi
+}
+zle -N zle-keymap-select
+zle-line-init () {
+zle -K viins
+printf "\033[6 q"
+}
+zle -N zle-line-init
+source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+bindkey -v
+bindkey '^[^?' backward-kill-word
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('/opt/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/opt/miniconda3/etc/profile.d/conda.sh" ]; then
+        . "/opt/miniconda3/etc/profile.d/conda.sh"
+    else
+        export PATH="/opt/miniconda3/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+# <<< conda initialize <<<
+
