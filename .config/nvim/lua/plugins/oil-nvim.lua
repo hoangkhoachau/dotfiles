@@ -1,5 +1,6 @@
 return {
   'stevearc/oil.nvim',
+      cmd = "Oil", -- Lazy load the plugin when the :Oil command is used
   opts = {},
   -- Optional dependencies
   dependencies = { { "echasnovski/mini.icons", opts = {} } },

@@ -86,7 +86,7 @@ vim.g.netrw_winsize = 25
 vim.g.netrw_list_hide = [[$^\|\s\s$\zs\.\S\+,$^\|\s\s$ntuser\.\S\+]]
 
 
-vim.api.nvim_create_autocmd({ 'BufEnter' }, {
-    pattern = '*',
-    command = "Copilot disable"
-})
+-- vim.api.nvim_create_autocmd({ 'BufEnter' }, {
+--     pattern = '*',
+--     command = "Copilot disable"
+-- })

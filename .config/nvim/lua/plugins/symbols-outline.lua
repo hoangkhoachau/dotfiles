@@ -1,4 +1,5 @@
 return {'https://github.com/simrat39/symbols-outline.nvim',
+      cmd = "SymbolsOutline",
 config = function()
 local opts = {
   highlight_hovered_item = false,

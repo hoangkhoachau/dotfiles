@@ -1,45 +1,75 @@
--- Lua
 return {
-  {
-    'abecodes/tabout.nvim',
-    lazy = false,
-    config = function()
-            require('tabout').setup {
-    tabkey = '<Tab>', -- key to trigger tabout, set to an empty string to disable
-    backwards_tabkey = '<S-Tab>', -- key to trigger backwards tabout, set to an empty string to disable
-    act_as_tab = true, -- shift content if tab out is not possible
-    act_as_shift_tab = false, -- reverse shift content if tab out is not possible (if your keyboard/terminal supports <S-Tab>)
-    default_tab = '<C-t>', -- shift default action (only at the beginning of a line, otherwise <TAB> is used)
-    default_shift_tab = '<C-d>', -- reverse shift default action,
-    enable_backwards = true, -- well ...
-    completion = true, -- if the tabkey is used in a completion pum
-    tabouts = {
-        {open = "'", close = "'"},
-        {open = '"', close = '"'},
-        {open = '`', close = '`'},
-        {open = '(', close = ')'},
-        {open = '[', close = ']'},
-        {open = '{', close = '}'}
+    "kawre/neotab.nvim",
+    event = "InsertEnter",
+    opts = {
+        -- configuration goes here
+        tabkey = "<Tab>",
+        act_as_tab = true,
+        behavior = "nested", ---@type ntab.behavior
+        pairs = { ---@type ntab.pair[]
+            { open = "(", close = ")" },
+            { open = "[", close = "]" },
+            { open = "{", close = "}" },
+            { open = "'", close = "'" },
+            { open = '"', close = '"' },
+            { open = "`", close = "`" },
+            { open = "<", close = ">" },
         },
-    ignore_beginning = true, --[[ if the cursor is at the beginning of a filled element it will rather tab out than shift the content ]]
-    exclude = {} -- tabout will ignore these filetypes
-    }
-    end,
-    dependencies = { -- These are optional
-      "nvim-treesitter/nvim-treesitter",
-      "L3MON4D3/LuaSnip",
-      "hrsh7th/nvim-cmp"
+        exclude = {},
+        smart_punctuators = {
+            enabled = false,
+            semicolon = {
+                enabled = false,
+                ft = { "cs", "c", "cpp", "java" },
+            },
+            escape = {
+                enabled = false,
+                triggers = {}, ---@type table<string, ntab.trigger>
+            },
+        },
     },
-    opt = true,  -- Set this to true if the plugin is optional
-    event = 'InsertCharPre', -- Set the event to 'InsertCharPre' for better compatibility
-    priority = 1000,
-  },
-  {
-    "L3MON4D3/LuaSnip",
-    keys = function()
-      -- Disable default tab keybinding in LuaSnip
-      return {}
-    end,
-  },
-}
+    config = function(_, opts) -- _ to ignore first argument (plugin object if any)
+        -- Check if cmp, luasnip, and neotab are installed
+        local ok_cmp, cmp = pcall(require, "cmp")
+        local ok_luasnip, luasnip = pcall(require, "luasnip")
+        local ok_neotab, neotab = pcall(require, "neotab")
 
+        if ok_cmp and ok_luasnip and ok_neotab then
+            -- Initialize neotab with the provided options
+            neotab.setup(opts)
+
+            local tab_mapping = cmp.mapping(function(fallback)
+                if cmp.visible() then
+                    cmp.select_next_item()
+                elseif luasnip.jumpable(1) then
+                    luasnip.jump(1)
+                else
+                    -- Safe call to neotab.tabout() with error handling
+                    local ok, err = pcall(neotab.tabout)
+                    if not ok then
+                        print("Error in neotab.tabout: ", err)
+                        fallback()
+                    end
+                end
+            end, { "i", "s" })
+
+            -- Augment the existing mappings
+            cmp.setup {
+                mapping = {
+                    ["<Tab>"] = tab_mapping,
+                    ["<S-Tab>"] = cmp.mapping.select_prev_item()
+                }
+            }
+        else
+            if not ok_cmp then
+                vim.notify("nvim-cmp is not installed or configured correctly", vim.log.levels.ERROR)
+            end
+            if not ok_luasnip then
+                vim.notify("LuaSnip is not installed or configured correctly", vim.log.levels.ERROR)
+            end
+            if not ok_neotab then
+                vim.notify("neotab.nvim is not installed or configured correctly", vim.log.levels.ERROR)
+            end
+        end
+    end
+}
