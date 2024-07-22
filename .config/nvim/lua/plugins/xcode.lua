@@ -1,4 +1,7 @@
-return {
+return {{
+    "nvim-telescope/telescope.nvim",
+    lazy=true
+},{
   "wojciech-kulik/xcodebuild.nvim",
     lazy=true,
     cmd = {"XcodebuildSetup",
@@ -29,4 +32,4 @@ return {
  
   end,
 }
-
+}
