@@ -19,13 +19,13 @@ vim.keymap.set({ "n", "v" }, "<leader>=", function()
   local conform = require("conform")
   conform.format({
     lsp_fallback = true,
-    async = false,
+    async = true,
     timeout_ms = 500,
   })
 end, { desc = "Format file or range (in visual mode)" })
 
 -- LSP Keybindings
-local lsp_keybindings = function()
+lsp_keybindings = function()
   vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, {})
   vim.keymap.set('n', ']d', vim.diagnostic.goto_next, {})
   vim.keymap.set('n', '<Leader>gD', vim.lsp.buf.declaration, {})
