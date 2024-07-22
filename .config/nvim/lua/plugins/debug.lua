@@ -33,7 +33,6 @@ return {
         cmd = { "DapToggleBreakpoint", "DapContinue", "DapStepOver", "DapStepOut", "DapStepInto" },
         config = function()
             local xcodebuild = require("xcodebuild.integrations.dap")
-
     -- TODO: change it to your local codelldb path
     local codelldbPath = os.getenv("HOME") .. "/tools/codelldb-aarch64-darwin/extension/adapter/codelldb"
 
