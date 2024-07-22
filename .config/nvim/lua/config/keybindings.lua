@@ -3,6 +3,7 @@ vim.g.mapleader = " "
 vim.api.nvim_set_keymap('n', '<Leader>r', ':10split <CR>:term ./%:r<CR>i<CR>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<F4>', ':SymbolsOutline<CR>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<leader>o', ':Oil<CR>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<leader>u', ":lua require('undotree').toggle()<cr>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<F2>', ':25vs %:r.in<CR>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<Leader>cp', ':w<CR> :!clang++ -std=c++20 -Wall % -o %:r<CR>', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('n', '<leader>ff', '<cmd>FzfLua files<CR>', { noremap = true, silent = true })
@@ -16,7 +17,7 @@ vim.api.nvim_set_keymap('n', '<leader>fd', '<cmd>FzfLua diagnostics_document<CR>
 
 --LSP
 --lsp keybindings
-local lsp_keybindings = function()
+lsp_keybindings = function()
     vim.api.nvim_set_keymap('n', '[d', [[:lua vim.diagnostic.goto_prev()<cr>]], {})
     vim.api.nvim_set_keymap('n', ']d', [[:lua vim.diagnostic.goto_next()<cr>]], {})
     vim.api.nvim_set_keymap('n','<Leader>gD',[[:lua vim.lsp.buf.declaration()<cr>]],{})

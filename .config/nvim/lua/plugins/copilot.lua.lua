@@ -1,6 +1,15 @@
-return {
+return {{
+  "zbirenbaum/copilot-cmp",
+    lazy=true,
+    dependencies = {"zbirenbaum/copilot.lua"},
+  config = function ()
+    require("copilot_cmp").setup()
+  end
+    },
+{
   "zbirenbaum/copilot.lua",
-  cmd = "Copilot",
+    lazy=true,
+    dependencies = {"https://github.com/hrsh7th/nvim-cmp"},
   event = "InsertEnter",
   config = function()
 	  require('copilot').setup({
@@ -47,4 +56,5 @@ panel = {
   server_opts_overrides = {},
 })
   end,
+}
 }
