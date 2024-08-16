@@ -37,7 +37,7 @@ return {
         enable= not (os.getenv("COLORTERM")== nil or os.getenv("COLORTERM") == ''),
         additional_vim_regex_highlighting = false,
     },
-                indent = { enable = true },
+                    indent = { enable = true , disable = {'swift', 'text'} },
             })
         end, 0)
     end,

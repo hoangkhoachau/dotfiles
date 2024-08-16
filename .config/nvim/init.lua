@@ -77,13 +77,9 @@ vim.opt.hidden = true
 vim.opt.history = 1000
 vim.opt.splitright = true
 vim.opt.splitbelow = true
-
-vim.g.netrw_banner = 0
-vim.g.netrw_liststyle = 3
-vim.g.netrw_browse_split = 4
-vim.g.netrw_altv = 1
-vim.g.netrw_winsize = 25
-vim.g.netrw_list_hide = [[$^\|\s\s$\zs\.\S\+,$^\|\s\s$ntuser\.\S\+]]
+vim.opt.clipboard = 'unnamedplus'
+vim.opt.pumheight = 10
+vim.opt.completeopt = {'menu', 'menuone', 'noselect', 'preview'}
 
 
 -- vim.api.nvim_create_autocmd({ 'BufEnter' }, {
